@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная - Сервис рассылок{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header">Всего рассылок</div>
+            <div class="card-body">
+                <h2 class="card-title">{{ total_mailings }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-header">Активных рассылок</div>
+            <div class="card-body">
+                <h2 class="card-title">{{ active_mailings }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-header">Уникальных клиентов</div>
+            <div class="card-body">
+                <h2 class="card-title">{{ unique_clients }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if user.is_authenticated %}
+<div class="mt-4">
+    <h3>Быстрые действия</h3>
+    <div class="btn-group">
+        <a href="{% url 'mailing:client_create' %}" class="btn btn-primary">Добавить клиента</a>
+        <a href="{% url 'mailing:message_create' %}" class="btn btn-success">Создать сообщение</a>
+        <a href="{% url 'mailing:mailing_create' %}" class="btn btn-info">Создать рассылку</a>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-warning mt-4">
+    <h4>Для работы с сервисом войдите или зарегистрируйтесь</h4>
+    <a href="{% url 'users:login' %}" class="btn btn-primary">Войти</a>
+    <a href="{% url 'users:register' %}" class="btn btn-success">Зарегистрироваться</a>
+</div>
+{% endif %}
+{% endblock %}

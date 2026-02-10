@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Сообщения{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Сообщения</h1>
+    <a href="{% url 'mailing:message_create' %}" class="btn btn-primary">Создать сообщение</a>
+</div>
+
+{% if object_list %}
+<div class="list-group">
+    {% for message in object_list %}
+    <div class="list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{ message.subject }}</h5>
+            <small>Создано: {{ message.owner.email|default:"Система" }}</small>
+        </div>
+        <p class="mb-1">{{ message.body|truncatechars:100 }}</p>
+        <div class="mt-2">
+            <a href="{% url 'mailing:message_update' message.pk %}" class="btn btn-sm btn-warning">Изменить</a>
+            <a href="{% url 'mailing:message_delete' message.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+    Сообщений пока нет. <a href="{% url 'mailing:message_create' %}">Создайте первое сообщение</a>
+</div>
+{% endif %}
+{% endblock %}

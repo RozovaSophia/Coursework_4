@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}Статистика рассылок{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Статистика отправок</h1>
+    <a href="{% url 'mailing:mailing_list' %}" class="btn btn-primary">Назад к рассылкам</a>
+</div>
+
+{% if object_list %}
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card bg-primary text-white">
+            <div class="card-body text-center">
+                <h5 class="card-title">Всего попыток</h5>
+                <h2>{{ object_list.count }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-success text-white">
+            <div class="card-body text-center">
+                <h5 class="card-title">Успешных</h5>
+                <h2>{{ success_count }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-danger text-white">
+            <div class="card-body text-center">
+                <h5 class="card-title">Неуспешных</h5>
+                <h2>{{ failed_count }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Время попытки</th>
+                <th>Рассылка</th>
+                <th>Статус</th>
+                <th>Ответ сервера</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for attempt in object_list %}
+            <tr>
+                <td>{{ attempt.attempt_time|date:"d.m.Y H:i:s" }}</td>
+                <td>
+                    <a href="{% url 'mailing:mailing_update' attempt.mailing.pk %}">
+                        #{{ attempt.mailing.id }}: {{ attempt.mailing.message.subject|truncatechars:30 }}
+                    </a>
+                </td>
+                <td>
+                    <span class="badge {% if attempt.status == 'Успешно' %}bg-success{% else %}bg-danger{% endif %}">
+                        {{ attempt.status }}
+                    </span>
+                </td>
+                <td>
+                    <small>{{ attempt.server_response|truncatechars:50 }}</small>
+                    {% if attempt.server_response|length > 50 %}
+                    <button class="btn btn-sm btn-link" type="button" data-bs-toggle="collapse" 
+                            data-bs-target="#response{{ attempt.id }}">
+                        Показать полностью
+                    </button>
+                    <div class="collapse" id="response{{ attempt.id }}">
+                        <div class="card card-body">
+                            {{ attempt.server_response }}
+                        </div>
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">
+    <h4>Статистика пока пуста</h4>
+    <p>Отправьте первую рассылку, чтобы увидеть статистику здесь.</p>
+    <a href="{% url 'mailing:mailing_list' %}" class="btn btn-primary">Перейти к рассылкам</a>
+</div>
+{% endif %}
+
+{% endblock %}

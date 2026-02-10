@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Статистика рассылок{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Статистика рассылок</h1>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Всего отправок</h5>
+                    <h2>{{ total_attempts }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Успешных</h5>
+                    <h2>{{ successful_attempts }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-danger text-white">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Неуспешных</h5>
+                    <h2>{{ failed_attempts }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="mb-3">Статистика по рассылкам</h3>
+    {% if mailing_stats %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID рассылки</th>
+                    <th>Тема</th>
+                    <th>Всего отправок</th>
+                    <th>Успешных</th>
+                    <th>Неуспешных</th>
+                    <th>Процент успеха</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stat in mailing_stats %}
+                <tr>
+                    <td>{{ stat.mailing__id }}</td>
+                    <td>{{ stat.mailing__message__subject|truncatechars:30 }}</td>
+                    <td>{{ stat.total }}</td>
+                    <td class="text-success">{{ stat.success }}</td>
+                    <td class="text-danger">{{ stat.failed }}</td>
+                    <td>
+                        {% if stat.total > 0 %}
+                            {{ stat.success|floatformat:0 }}%
+                        {% else %}
+                            0%
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <p>Статистика по рассылкам пока недоступна.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
