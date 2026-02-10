@@ -7,61 +7,122 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Client',
+            name="Client",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('email', models.EmailField(max_length=254, unique=True, verbose_name='Email')),
-                ('full_name', models.CharField(max_length=255, verbose_name='ФИО')),
-                ('comment', models.TextField(blank=True, verbose_name='Комментарий')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "email",
+                    models.EmailField(
+                        max_length=254, unique=True, verbose_name="Email"
+                    ),
+                ),
+                ("full_name", models.CharField(max_length=255, verbose_name="ФИО")),
+                ("comment", models.TextField(blank=True, verbose_name="Комментарий")),
             ],
             options={
-                'verbose_name': 'Клиент',
-                'verbose_name_plural': 'Клиенты',
-                'permissions': [('view_all_clients', 'Может просматривать всех клиентов')],
+                "verbose_name": "Клиент",
+                "verbose_name_plural": "Клиенты",
+                "permissions": [
+                    ("view_all_clients", "Может просматривать всех клиентов")
+                ],
             },
         ),
         migrations.CreateModel(
-            name='Mailing',
+            name="Mailing",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('start_time', models.DateTimeField(verbose_name='Время начала')),
-                ('end_time', models.DateTimeField(verbose_name='Время окончания')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("start_time", models.DateTimeField(verbose_name="Время начала")),
+                ("end_time", models.DateTimeField(verbose_name="Время окончания")),
             ],
             options={
-                'verbose_name': 'Рассылка',
-                'verbose_name_plural': 'Рассылки',
-                'permissions': [('view_all_mailings', 'Может просматривать все рассылки'), ('disable_mailing', 'Может отключать рассылки')],
+                "verbose_name": "Рассылка",
+                "verbose_name_plural": "Рассылки",
+                "permissions": [
+                    ("view_all_mailings", "Может просматривать все рассылки"),
+                    ("disable_mailing", "Может отключать рассылки"),
+                ],
             },
         ),
         migrations.CreateModel(
-            name='MailingAttempt',
+            name="MailingAttempt",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('attempt_time', models.DateTimeField(auto_now_add=True, verbose_name='Время попытки')),
-                ('status', models.CharField(choices=[('success', 'Успешно'), ('failed', 'Не успешно')], max_length=10, verbose_name='Статус')),
-                ('server_response', models.TextField(blank=True, verbose_name='Ответ сервера')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "attempt_time",
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="Время попытки"
+                    ),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[("success", "Успешно"), ("failed", "Не успешно")],
+                        max_length=10,
+                        verbose_name="Статус",
+                    ),
+                ),
+                (
+                    "server_response",
+                    models.TextField(blank=True, verbose_name="Ответ сервера"),
+                ),
             ],
             options={
-                'verbose_name': 'Попытка рассылки',
-                'verbose_name_plural': 'Попытки рассылок',
+                "verbose_name": "Попытка рассылки",
+                "verbose_name_plural": "Попытки рассылок",
             },
         ),
         migrations.CreateModel(
-            name='Message',
+            name="Message",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('subject', models.CharField(max_length=255, verbose_name='Тема письма')),
-                ('body', models.TextField(verbose_name='Тело письма')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "subject",
+                    models.CharField(max_length=255, verbose_name="Тема письма"),
+                ),
+                ("body", models.TextField(verbose_name="Тело письма")),
             ],
             options={
-                'verbose_name': 'Сообщение',
-                'verbose_name_plural': 'Сообщения',
-                'permissions': [('view_all_messages', 'Может просматривать все сообщения')],
+                "verbose_name": "Сообщение",
+                "verbose_name_plural": "Сообщения",
+                "permissions": [
+                    ("view_all_messages", "Может просматривать все сообщения")
+                ],
             },
         ),
     ]
