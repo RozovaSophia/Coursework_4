@@ -18,22 +18,20 @@ def send_mailing_now(mailing):
             send_mail(
                 subject=mailing.message.subject,
                 message=mailing.message.body,
-                from_email='noreply@example.com',
+                from_email="noreply@example.com",
                 recipient_list=[client.email],
                 fail_silently=False,
             )
-            status = 'Успешно'
-            response = 'Отправлено'
+            status = "Успешно"
+            response = "Отправлено"
             success_count += 1
         except Exception as e:
-            status = 'Не успешно'
+            status = "Не успешно"
             response = str(e)
             failure_count += 1
 
         MailingAttempt.objects.create(
-            mailing=mailing,
-            status=status,
-            server_response=response
+            mailing=mailing, status=status, server_response=response
         )
 
     return True, f"Успешно: {success_count}, Ошибок: {failure_count}"
